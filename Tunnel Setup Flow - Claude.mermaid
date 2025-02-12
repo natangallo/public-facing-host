@@ -1,0 +1,25 @@
+graph TB
+    subgraph "Local Network"
+        A[Local Server/Proxmox] -->|Hosts| B[Nextcloud Service]
+        A -->|Creates| C[Service User]
+        C -->|Generates| D[SSH Keys]
+    end
+
+    subgraph "Internet"
+        E[DuckDNS Service] -->|Updates| F[DNS Records]
+    end
+
+    subgraph "Public Host"
+        G[HAProxy] -->|Frontend| H[SSL Termination]
+        I[SSH Service] -->|Accepts| J[Remote Tunnels]
+        K[DuckDNS Agent] -->|Updates| E
+    end
+
+    D -->|Copied to| I
+    B -->|Tunneled via SSH| J
+    J -->|Forwards to| G
+    F -->|Points to| G
+
+    style A fill:#f9f,stroke:#333
+    style G fill:#bbf,stroke:#333
+    style E fill:#bfb,stroke:#333
