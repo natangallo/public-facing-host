@@ -45,25 +45,72 @@ ssh-keygen -t rsa -b 4096
 #### 2.1 Install Required Packages
 ```bash
 sudo apt-get update
-sudo apt-get install haproxy openssh-server
+sudo apt-get install haproxy openssh-server -y
 ```
 
-#### 2.2 Configure HAProxy
+#### 2.2 Modify SSH Configuration
+Edit `/etc/ssh/sshd_config` 
+`PasswordAuthentication no
+PermitRootLogin no
+PubkeyAuthentication yes
+AllowTcpForwarding yes
+GatewayPorts yes`
+
+Restart SSH service
+`sudo systemctl restart ssh`
+
+#### 2.3 Configure HAProxy
 Create or modify `/etc/haproxy/haproxy.cfg`:
+```bash
+sudo nano /etc/haproxy/haproxy.cfg
+```
+Check HAProxy configuration file
+```bash
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+```
+Restart HAProxy Service
+```bash
+sudo systemctl restart haproxy
+```
 
 #### 2.3 DuckDNS Configuration
 
 Create `/usr/duckdns/duck_update.sh`:
+```bash
+sudo mkdir /usr/duckdns
+sudo nano /usr/duckdns/duck_update.sh
+sudo chmod +x /usr/duckdns/duck_update.sh
+```
 
 Add to crontab:
 ```bash
+sudo crontab -e
 */5 * * * * /usr/duckdns/duck_update.sh >/dev/null 2>&1
 ```
 
 ### 3. SSH Tunnel Configuration
 
-#### 3.1 Create Tunnel Management Script
+#### 3.1 Copy Public Key to public host server
+Execute:
+```bash
+ssh-copy-id proxmox-service@ip_del_tuo_server_pubblico
+```
+Otherwise, manually copy the content of `id_rsa.pub` in `~/.ssh/authorized_keys`  file on the server:
+```bash
+mkdir -p ~/.ssh
+echo "PUBLIC_KEY" >> ~/.ssh/authorized_keys
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+```
+
+#### 3.2 Create Tunnel Management Script
 Create `~/autossh/autossh_forward.sh`:
+```bash
+mkdir ~/autossh
+nano ~/autossh/autossh_forward.sh
+chmod +x ~/autossh/autossh_forward.sh
+```
+
 
 
 ## Security Considerations
