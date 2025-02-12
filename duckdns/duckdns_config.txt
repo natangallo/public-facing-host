@@ -1,0 +1,2 @@
+duckdns-host01 duck-dns-token-host-010101010101
+duckdns-host02 duck-dns-token-host-020202020202
