@@ -50,11 +50,11 @@ sudo apt-get install haproxy openssh-server -y
 
 #### 2.2 Modify SSH Configuration
 Edit `/etc/ssh/sshd_config` 
-`PasswordAuthentication no
-PermitRootLogin no
-PubkeyAuthentication yes
-AllowTcpForwarding yes
-GatewayPorts yes`
+`PasswordAuthentication no`
+`PermitRootLogin no`
+`PubkeyAuthentication yes`
+`AllowTcpForwarding yes`
+`GatewayPorts yes`
 
 Restart SSH service
 `sudo systemctl restart ssh`
