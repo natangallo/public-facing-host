@@ -50,11 +50,13 @@ sudo apt-get install haproxy openssh-server -y
 
 #### 2.2 Modify SSH Configuration
 Edit `/etc/ssh/sshd_config` 
-`PasswordAuthentication no`
-`PermitRootLogin no`
-`PubkeyAuthentication yes`
-`AllowTcpForwarding yes`
-`GatewayPorts yes`
+```bash
+PasswordAuthentication no
+PermitRootLogin no
+PubkeyAuthentication yes
+AllowTcpForwarding yes
+GatewayPorts yes
+```
 
 Restart SSH service
 `sudo systemctl restart ssh`
@@ -72,6 +74,7 @@ Restart HAProxy Service
 ```bash
 sudo systemctl restart haproxy
 ```
+[haproxy.cfg File][https://github.com/natangallo/public-facing-host/blob/b5e3274c08ce7b2dff3a009bcf57e1462e512c13/haproxy.cfg]
 
 #### 2.3 DuckDNS Configuration
 
@@ -81,6 +84,7 @@ sudo mkdir /usr/duckdns
 sudo nano /usr/duckdns/duck_update.sh
 sudo chmod +x /usr/duckdns/duck_update.sh
 ```
+[duck_update.sh File][https://github.com/natangallo/public-facing-host/blob/b5e3274c08ce7b2dff3a009bcf57e1462e512c13/duckdns/duck_update.sh]
 
 Add to crontab:
 ```bash
@@ -93,7 +97,7 @@ sudo crontab -e
 #### 3.1 Copy Public Key to public host server
 Execute:
 ```bash
-ssh-copy-id proxmox-service@ip_del_tuo_server_pubblico
+ssh-copy-id service-user@public_host_ip_or_fqdn
 ```
 Otherwise, manually copy the content of `id_rsa.pub` in `~/.ssh/authorized_keys`  file on the server:
 ```bash
@@ -110,7 +114,7 @@ mkdir ~/autossh
 nano ~/autossh/autossh_forward.sh
 chmod +x ~/autossh/autossh_forward.sh
 ```
-
+[autossh_forward.sh File][https://github.com/natangallo/public-facing-host/blob/b5e3274c08ce7b2dff3a009bcf57e1462e512c13/autossh/autossh_forward.sh]
 
 
 ## Security Considerations
